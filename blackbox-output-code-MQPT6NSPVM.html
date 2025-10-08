@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Turn Trash into Cash - Ubah Sampah Jadi Uang!</title>
+    <style>
+        /* CSS Sederhana, Mirip Shopee: Hijau Tema, Responsive */
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; color: #333; }
+        header { background-color: #28a745; color: white; padding: 10px; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 24px; font-weight: bold; }
+        nav ul { list-style: none; display: flex; gap: 20px; margin: 0; padding: 0; }
+        nav a { color: white; text-decoration: none; }
+        .search { padding: 5px; width: 200px; }
+        .container { max-width: 1200px; margin: 20px auto; padding: 0 20px; }
+        .banner { background-color: #28a745; color: white; text-align: center; padding: 40px; margin-bottom: 20px; }
+        .section { margin-bottom: 40px; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; }
+        input, select { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; }
+        button { background-color: #28a745; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background-color: #218838; }
+        .cart { background: #e9ecef; padding: 10px; border-radius: 4px; margin-top: 10px; }
+        .total { font-size: 18px; font-weight: bold; color: #28a745; }
+        #map { height: 400px; width: 100%; margin-top: 10px; } /* Untuk Google Maps Embed */
+        .marketplace-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+        .product { border: 1px solid #ddd; padding: 15px; text-align: center; border-radius: 8px; }
+        .product img { width: 100%; height: 150px; object-fit: cover; border-radius: 4px; }
+        .price { color: #28a745; font-weight: bold; font-size: 18px; }
+        footer { background-color: #28a745; color: white; text-align: center; padding: 20px; margin-top: 40px; }
+        @media (max-width: 768px) { header { flex-direction: column; } nav ul { flex-direction: column; gap: 10px; } }
+    </style>
+</head>
+<body>
+    <!-- Header seperti Shopee -->
+    <header>
+        <div class="logo">Turn Trash into Cash ♻️💰</div>
+        <input type="text" class="search" placeholder="Cari produk daur ulang atau lokasi TPA...">
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#calculator">Calculator</a></li>
+                <li><a href="#map">Peta TPA</a></li>
+                <li><a href="#marketplace">Marketplace</a></li>
+                <li><a href="#profile">Profil</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Banner Promo -->
+    <div class="banner" id="home">
+        <h1>Ubah Sampahmu Jadi Uang!</h1>
+        <p>Hitung nilai sampah, temukan TPA terdekat, dan jual/beli di marketplace kami.</p>
+        <button onclick="document.getElementById('calculator').scrollIntoView();">Coba Calculator Sekarang</button>
+    </div>
+
+    <!-- Fitur Calculator Sampah -->
+    <div class="container">
+        <div class="section" id="calculator">
+            <h2>Calculator Sampah: Hitung Nilai Rupiah</h2>
+            <p>Masukkan jenis dan jumlah sampah Anda. Harga estimasi per kg (Rp): Plastik 3.000, Kertas 2.000, Logam 7.000, Gelas 1.500, Organik 500.</p>
+            <div class="form-group">
+                <label>Jenis Sampah:</label>
+                <select id="jenis">
+                    <option value="plastik">Plastik</option>
+                    <option value="kertas">Kertas</option>
+                    <option value="logam">Logam</option>
+                    <option value="gelas">Gelas</option>
+                    <option value="organik">Organik</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Jumlah (kg):</label>
+                <input type="number" id="jumlah" min="0" step="0.1" placeholder="0">
+            </div>
+            <button onclick="tambahSampah()">Tambah ke Daftar</button>
+            <div class="cart" id="daftarSampah">
+                <h3>Daftar Sampah Anda:</h3>
+                <div id="listItem"></div>
+            </div>
+            <button onclick="hitungTotal()" style="margin-top: 10px;">Hitung Total</button>
+            <div class="total" id="totalHasil" style="display: none;">Total Nilai: Rp 0</div>
+        </div>
+
+        <!-- Fitur Map Sampah -->
+        <div class="section" id="map">
+            <h2>Peta Lokasi TPA Terdekat</h2>
+            <p>Cari TPA sampah di sekitar Anda. Contoh: TPA Bantargebang, Jakarta.</p>
+            <!-- Embed Google Maps (ganti dengan lokasi Anda; ini contoh statis) -->
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.309146299999!2d106.912!3d-6.25!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNsKwMTUnMDAuMCJTIDEwNsKwNTQnNDMuMiJF!5e0!3m2!1sen!2sid!4v1690000000000" 
+                    allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" id="map"></iframe>
+            <p><em>Untuk fitur pencarian lokasi real-time, integrasikan Google Maps API.</em></p>
+        </div>
+
+        <!-- Fitur Marketplace seperti Shopee -->
+        <div class="section" id="marketplace">
+            <h2>Marketplace Daur Ulang</h2>
+            <p>Jual atau beli produk dari sampah daur ulang. Seperti Shopee, tapi fokus lingkungan!</p>
+            <div class="marketplace-grid">
+                <div class="product">
+                    <img src="https://via.placeholder.com/250x150?text=Tas+Plastik+Daur+Ulang" alt="Tas dari Plastik">
+                    <h3>Tas Ramah Lingkungan</h3>
+                    <p>Dari botol plastik bekas.</p>
+                    <div class="price">Rp 50.000</div>
+                    <button onclick="beliProduk('Tas')">Beli Sekarang</button>
+                </div>
+                <div class="product">
+                    <img src="https://via.placeholder.com/250x150?text=Dompet+Kertas" alt="Dompet dari Kertas">
+                    <h3>Dompet Kertas Daur Ulang</h3>
+                    <p>Dari koran bekas.</p>
+                    <div class="price">Rp 30.000</div>
+                    <button onclick="beliProduk('Dompet')">Beli Sekarang</button>
+                </div>
+                <div class="product">
+                    <img src="https://via.placeholder.com/250x150?text=Hiasan+Logam" alt="Hiasan Logam">
+                    <h3>Hiasan Logam</h3>
+                    <p>Dari kaleng bekas.</p>
+                    <div class="price">Rp 20.000</div>
+                    <button onclick="beliProduk('Hiasan')">Beli Sekarang</button>
+                </div>
+                <!-- Tambah lebih banyak produk di sini -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2023 Turn Trash into Cash. Ubah sampah jadi peluang! | FAQ | Kontak: info@turntrash.com</p>
+    </footer>
+
+    <!-- JavaScript untuk Interaktivitas -->
+    <script>
+        let sampahList = []; // Array untuk simpan daftar sampah
+
+        const hargaSampah = {
+            plastik: 3000,
+            kertas: 2000,
+            logam: 7000,
+            gelas: 1500,
+            organik: 500
+        };
+
+        function tambahSampah() {
+            const jenis = document.getElementById('jenis').value;
+            const jumlah = parseFloat(document.getElementById('jumlah').value);
+            if (jumlah > 0) {
+                sampahList.push({ jenis, jumlah });
+                updateDaftar();
+                document.getElementById('jumlah').value = ''; // Reset input
+            } else {
+                alert('Masukkan jumlah yang valid!');
+            }
+        }
+
+        function updateDaftar() {
+            const list = document.getElementById('listItem');
+            list.innerHTML = '';
+            sampahList.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.innerHTML = `${item.jenis.charAt(0).toUpperCase() + item.jenis.slice(1)}: ${item.jumlah}kg = Rp ${(item.jumlah * hargaSampah[item.jenis]).toLocaleString()}`;
+                const btnHapus = document.createElement('button');
+                btnHapus.innerText = 'Hapus';
+                btnHapus.onclick = () => { sampahList.splice(index, 1); updateDaftar(); };
+                div.appendChild(btnHapus);
+                list.appendChild(div);
+            });
+        }
+
+        function hitungTotal() {
+            if (sampahList.length === 0) {
+                alert('Tambahkan sampah dulu!');
+                return;
+            }
+            let total = 0;
+            sampahList.forEach(item => {
+                total += item.jumlah * hargaSampah[item.jenis];
+            });
+            document.getElementById('totalHasil').innerText = `Total Nilai: Rp ${total.toLocaleString()}`;
+            document.getElementById('totalHasil').style.display = 'block';
+        }
+
+        function beliProduk(nama) {
+            alert(`Anda membeli ${nama}! (Ini mockup. Integrasikan dengan cart Shopee-like untuk real.)`);
+        }
+
+        // Navigasi smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>
